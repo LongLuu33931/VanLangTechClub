@@ -1,0 +1,21 @@
+﻿@model Team15_SEP2022.Models.Semester
+
+<div class="modal fade" id="editHkF" tabindex="-1" role="dialog">
+    @using (Ajax.BeginForm("EditSemester", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "upEF", OnSuccess= "success", LoadingElementId="loading" }))
+    {
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cập Nhật Học Kỳ</h5>
+                </div>
+                <div class="modal-body row" id="upEF">
+                    @Html.Partial("_EditSemesterForm", Model)
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary-v2">Cập nhật</button>
+                    <button id="btn-c-e-form" type="button" class="btn btn-cancel">Quay về</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

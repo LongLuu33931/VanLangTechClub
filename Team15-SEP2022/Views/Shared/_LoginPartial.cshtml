@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    <div class="nav-item dropdown nav-item-profile">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="text-transform: lowercase">@User.Identity.GetUserName().Split('@')[0]</a>
+        <div class="dropdown-menu rounded-0 m-0 profile-sub-menu">
+            @if (!User.IsInRole("Admin"))
+            {
+                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateInfo">Thông tin cá nhân</a>
+            }
+            <div>
+                @if (User.IsInRole("Ban chủ nhiệm") || User.IsInRole("Admin"))
+                {
+                    <a href=@Url.Action("Index", "QuanTri") class="dropdown-item">Ban chủ nhiệm</a>
+                }
+                @if (User.IsInRole("Truyền thông") || User.IsInRole("Admin"))
+                {
+                    <a href=@Url.Action("Index", "QuanTriTT") class="dropdown-item">Truyền thông</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href=@Url.Action("Index", "Admin") class="dropdown-item">Admin</a>
+                }
+                @if (User.IsInRole("Ban chủ nhiệm") || User.IsInRole("Truyền thông") || User.IsInRole("Thành viên"))
+                {
+                    <a class="dropdown-item" id="tag-a-archive">Thành tích</a>
+                    <a href=@Url.Action("LichSuDKSuKien", "Home") class="dropdown-item">Lịch sử đăng ký sự kiện</a>
+                }
+            </div>
+            <a href=@Url.Action("LogOff", "Account") class="dropdown-item">Đăng xuất</a>
+        </div>
+    </div>
+}
+else
+{
+    <a class="btn btn-primary px-3 d-none d-lg-flex btn-primary-v2 btn-login-index" id="btn-modal-login">Đăng nhập</a>
+}

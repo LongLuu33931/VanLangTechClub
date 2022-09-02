@@ -1,0 +1,198 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.RegisterEvent>
+
+@{
+    ViewBag.Title = "Sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutTT.cshtml";
+    bool Attendandable = ViewBag.Attendandable == "True" ? true : false;
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Danh Sách Điểm Danh Sự Kiện</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=@Url.Action("SuKien", "QuanTri")>Quản lý sự kiện</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Danh sách điểm danh sự kiện</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-none" id="action-fade">
+                        <div id="name-event" class="d-inline-block">
+                            <h5>@ViewBag.EventName</h5>
+                        </div>
+                    <div id="actionRegist" style="float:right">
+                        @if (Attendandable)
+                        {
+                            <button id="btn-scanQRCode" class="btn btn-primary-v2 mr-1 ml-1">QR Code</button>
+                        }
+                        @using (Html.BeginForm("ExportToExcellRegisterEvent", "ExportFile", new { id = ViewBag.EventId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <button type="submit" class="btn btn-primary-v2 mr-1">Export File</button>
+                        }
+                    </div>
+                </div>
+
+                <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD;">
+                    <thead>
+                        <tr>
+                            <th data-sortable='false'>STT</th>
+                            <th data-sortable='false'>MSSV</th>
+                            <th data-sortable='false'>Họ và Tên</th>
+                            <th data-sortable="false" class="text-center">Ngày điểm danh</th>
+                            <th data-sortable='false' class="text-center">Điểm Danh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int index = 1;}
+                        @foreach (var person in Model)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@person.StudentId</td>
+                                <td>@person.InformationStudent.Full_Name</td>
+
+                                @if (person.Attendances)
+                                {
+                                    string attendcesTo = person.AttendancesTo.HasValue ? person.AttendancesTo.Value.ToString("dd/M/yyyy - HH:mm") : person.AttendancesBy;
+                                    <td class="text-center">@attendcesTo</td>
+                                    <td class="text-center">
+                                        <input type="checkbox" class='form-check-input' disabled checked>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">Chưa điểm danh</td>
+                                    <td class="text-center">
+                                        @if (Attendandable)
+                                        {
+                                            using (Ajax.BeginForm("Attendand", new { StudentId = person.StudentId, EventId = person.EventId }, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn muốn điểm danh cho thành viên này?", LoadingElementId = "loading", OnSuccess = "AttendandSuccess" }))
+                                            {
+                                                <button type="submit" class="btn btn-primary">Điểm danh</button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a title="Chưa thể diểm danh">
+                                                <input type="checkbox" class='form-check-input' disabled>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                            index++;
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="scanQRCodeForm">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Điểm Danh QR Code</h5>
+            </div>
+
+            <div class="modal-body text-center">
+                <video id="preview" width="300" height="300" style="margin:auto"></video>
+            </div>
+
+            <div class="modal-footer">
+                @using (Ajax.BeginForm("Attendand", new { EventId = ViewBag.EventId }, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "loading", OnSuccess = "onSuccess" }, new { id = "scanForm" }))
+                {
+                    @Html.Hidden("StudentId")
+                }
+                <button id="btn-close-QRCodeF" class="btn btn-secondary">Quay lại</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function onSuccess(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage)
+            }
+        }
+
+        $(function () {
+            $(".dataTable-input").css("float", "right");
+            $(".dataTable-search").prepend($("#actionRegist").clone());
+            $(".dataTable-search").prepend($("#name-event").clone());
+
+            $(".dataTable-search").css("width", "100%");
+            $("#action-fade").remove();
+
+            $("#btn-scanQRCode").on("click", function () {
+                var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    alert("Tính năng này chưa được phát triển trên thiết bị IOS!")
+                } else {
+                    let scanner = new Instascan.Scanner({
+                        video: document.getElementById("preview")
+                    });
+
+                    scanner.addListener("scan", function (content) {
+                        $("#StudentId").val(content);
+                        $("#scanForm").submit();
+                        scanner.stop();
+                    });
+
+                    Instascan.Camera.getCameras()
+                        .then(function (cameras) {
+                            if (cameras.length > 0) {
+                                if (cameras[1] != null) {
+                                    scanner.start(cameras[1]);
+                                } else {
+                                    scanner.start(cameras[0]);
+                                }
+                                $("#btn-close-QRCodeF").on("click", function () {
+                                    $("#scanQRCodeForm").modal("hide");
+                                    scanner.stop();
+
+                                })
+                            } else {
+                                resultado.innerText = "No cameras found.";
+                            }
+                        })
+                        .catch(function (e) {
+                            resultado.innerText = e;
+                        });
+
+                    $("#scanQRCodeForm").modal("show");
+                }
+               
+            })
+        });
+
+        $("#btn-close-QRCodeF").on("click", function () {
+            $("#scanQRCodeForm").modal("hide");
+        })
+
+        function AttendandSuccess(result) {
+            if (result.resultMessage.length > 0) {
+                alert(result.resultMessage);
+                window.location.reload();
+            }
+        }
+    </script>
+}

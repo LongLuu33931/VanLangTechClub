@@ -1,0 +1,97 @@
+﻿@model PagedList.IPagedList<Team15_SEP2022.Models.RegisterEvent>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lịch sử đăng ký - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div>
+            <h1 class="content-header">Lịch Sử Đăng Ký Sự Kiện</h1>
+        </div>
+
+        <nav class="breadcrumb1" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang Chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Lịch Sử Đăng Ký Sự Kiện</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-end border-bottom pb-2">
+            @using (Ajax.BeginForm("EventHistoryList", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "UpH" }, new { id = "eventList" }))
+            {
+                @Html.Hidden("page", Model.PageNumber)
+
+                <i class="bi bi-filter fa-2x fw-bold1"></i>
+
+                @Html.DropDownList("typeId", null, "Loại", htmlAttributes: new { @class = "form-select event-selector d-inline mx-1" })
+
+                @Html.DropDownList("statusId", null, "Trạng thái", htmlAttributes: new { @class = "form-select event-selector d-inline mx-1" })
+
+                @Html.TextBox("search", null, new { @class = "form-control event-selector d-inline", Placeholder = "Tìm kiếm" })
+
+
+            }
+        </div>
+
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-4">
+                    <div class="table-responsive-sm">
+                        <table class="table table-font table-striped table-bordered" data-wow-delay="0.1s">
+                            <thead class="table-bordered">
+                                <tr>
+                                    <th class="text-center">STT</th>
+                                    <th><b>Sự Kiện</b></th>
+                                    <th><b>Loại</b></th>
+                                    <th><b>Ngày Diễn Ra</b></th>
+                                    <th><b>Tình trạng</b></th>
+                                    <th class="text-center">Điểm danh</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="UpH">
+                                @Html.Partial("_HistoryEventList")
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm justify-content-end">
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+
+                        var x = i == 1 ? " active" : "";
+                        <li data-value=@i class="@("page-item" + x)"><a class="page-link">@i</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#typeId, #statusId").on("change", function () {
+            $("#eventList").submit();
+        })
+
+        $(".page-item").on("click", function () {
+            $("#page").val($(this).attr("data-value"));
+            $("#eventList").submit();
+        })
+
+        $(function () {
+            var $h3s = $('.page-item').click(function () {
+                $h3s.removeClass('active');
+                $(this).addClass('active');
+            });
+        })
+    </script>
+}
+

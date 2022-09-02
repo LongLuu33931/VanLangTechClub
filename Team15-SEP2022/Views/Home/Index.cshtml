@@ -1,0 +1,55 @@
+﻿@using Team15_SEP2022.Models
+@model LoginViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Trang chủ  - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container-xxl">
+    <div class="container">
+        <div class="wow slideInLeft" data-wow-delay="0.1s">
+            <h1 class="mb-3 my-3">Sự kiện</h1>
+        </div>
+        @Html.Action("EventListHome")
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            var returnUrl = '@ViewBag.ReturnUrl'.length;
+            var isLogin = '@Request.IsAuthenticated';
+            if (returnUrl > 0 && isLogin == "True") {
+                alert("Bạn không có quyền truy cập vào tính năng này, hãy đăng nhập thử đăng nhập bằng tài khoản khác!");
+            } else if (returnUrl > 0 && isLogin == "False") {
+                alert("Vui lòng đăng nhập tài khoản để có thể truy cập tính năng này!");
+            }
+        })
+
+
+        $(function () {
+            var message = "@ViewBag.message";
+            var email = "@ViewBag.email"
+            //check invalid
+            if (message == "True") {
+
+                // set text cho SummaryValidation for login form
+                $("#summaryValidation").html("Email hoặc mật khẩu không hợp lệ");
+
+                // set text cho Email current try login for login form
+                $("#email").val(email);
+
+                // show modal login for display value
+                $("#login").modal("show");
+
+                //set btn close allow hide modal because this function allways run if dont' have modal can't hide when click into this button
+                $("#btn-hide-login").click(function () {
+                    $("#login").modal("hide");
+                })
+            }
+        })
+    </script>
+
+}

@@ -1,0 +1,292 @@
+﻿@model Team15_SEP2022.Models.Event
+
+@{
+    ViewBag.Title = "Chi tiết sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+    int EventStatusId = Model.EventStatusId;
+}
+
+<div class="main-content container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Chi Tiết Sự Kiện</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=@Url.Action("SuKien", "QuanTri")>Quản Lý Sự Kiện</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Xem Chi Tiết Sự Kiện</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="first-name-column">Trạng thái</label>
+                            <div>
+                                @switch (Model.EventStatusId)
+                                {
+                                    case 1:
+                                        <span class="badge bg-warning">@Model.EventStatu.Status</span>
+                                        break;
+                                    case 2:
+                                        <span class="badge bg-dark">@Model.EventStatu.Status</span>
+                                        break;
+                                    case 3:
+                                        <span class="badge bg-info">@Model.EventStatu.Status</span>
+                                        break;
+                                    case 4:
+                                        <span class="badge bg-primary">@Model.EventStatu.Status</span>
+                                        break;
+                                    case 5:
+                                        <span class="badge bg-secondary">@Model.EventStatu.Status</span>
+                                        break;
+                                    case 6:
+                                        <span class="badge bg-danger">@Model.EventStatu.Status</span>
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="first-name-column">Tiêu Đề</label>
+                            @Html.TextBoxFor(model => model.NameEvent, new { @class = "form-control", @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="last-name-column">Loại</label>
+                            @Html.TextBoxFor(model => model.EventType.Type, new { @class = "form-control", @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="country-floating">Ngày diễn ra</label>
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", type = "date", Value = Model.StartDate.ToString("yyyy-MM-dd"), @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="country-floating">Ngày kết thúc</label>
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", type = "date", Value = Model.EndDate.ToString("yyyy-MM-dd"), @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="company-column">Giờ Diễn Ra</label>
+                            @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control", type = "time", @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="company-column">Giờ Kết Thúc</label>
+                            @Html.TextBoxFor(model => model.EndTime, new { @class = "form-control", type = "time", @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group mb-3 d-flex flex-column">
+                            <label>Hình ảnh</label>
+                            <img id="previewImage" src="@Url.Content("~/Image/" + Model.Event_Image)" onerror="this.onerror = null; this.src='/SEP25Team015/Area/assets/images/logo-vanlangtech.png'" height="80" , width="80" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="company-column">Mô Tả</label>
+                            @Html.TextAreaFor(model => model.Content, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 col-12">
+                        @if (EventStatusId == 6 || EventStatusId == 2)
+                        {
+                            if (Model.ReasonReject != null)
+                            {
+                                <div class="form-group">
+                                    <label for="company-column">Lý do từ chối</label>
+                                    @Html.TextAreaFor(model => model.ReasonReject, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label for="company-column">Lý do hủy</label>
+                                    @Html.TextAreaFor(model => model.ReasonCancel, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+                                </div>
+                            }
+                        }
+                        else if (EventStatusId == 1 && Model.ReasonRejectCancel != null)
+                        {
+                            <div class="form-group">
+                                <label for="company-column">Lý do từ chối hủy</label>
+                                @Html.TextAreaFor(model => model.ReasonRejectCancel, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-12 col-12">
+                        <div class="form-group text-right">
+                            @if (EventStatusId == 1)
+                            {
+                                <button class="btn btn-action" data-toggle="modal" data-target="#submit-event-form">Duyệt</button>
+                                <button class="btn btn-action" data-toggle="modal" data-target="#reject-event-form">Từ Chối</button>
+                            }
+                            @if (EventStatusId == 6 || !String.IsNullOrEmpty(Model.ReqCancelBy))
+                            {
+                                using (Ajax.BeginForm("ApproveCancelEvent", null, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn có chắc muốn duyệt hủy sự kiện này?", OnSuccess = "onSuccessApproveCancelEvent", LoadingElementId = "loading" }, new { @class = "d-inline" }))
+                                {
+                                    @Html.HiddenFor(model => model.Id)
+                                    <button class="btn btn-action" type="submit">Duyệt Hủy</button>
+                                }
+                                <button class="btn btn-primary-v2" data-toggle="modal" data-target="#reject-c-event-form">Từ Chối Hủy</button>
+                            }
+                            <a href=@Url.Action("SuKien", "QuanTri") class="btn btn-cancel">Quay về</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@if (Model.EventStatusId == 6)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="reject-c-event-form">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận</h5>
+                </div>
+                @using (Ajax.BeginForm("RejectCancelEvent", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "upRCE", Confirm = "Bạn có chắc muốn từ chối hủy sự kiện này", OnSuccess = "onSuccessRejectCancelEvent", LoadingElementId = "loading" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="modal-body" id="upRCE">
+                        @Html.Partial("_RejectCancelEventForm")
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-action">Xác nhận</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Model.EventStatusId == 1)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="submit-event-form">
+        @using (Ajax.BeginForm("AprroveEvent", "QuanTri",
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "SuccessApprove",
+            }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn đồng ý cho sự kiện này được diễn ra?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-action">Xác nhận</button>
+                        <button class="btn btn-primary" data-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="reject-event-form">
+        @using (Ajax.BeginForm("RejectEvent", "QuanTri",
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "SuccessReject",
+                UpdateTargetId = "rejectF"
+            }))
+        {
+            @Html.HiddenFor(model => model.Id)
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Lý do từ chối</label>
+                        </div>
+                        <div id="rejectF">
+                            @Html.Partial("_RejectEventForm")
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-action">Xác nhận</button>
+                        <button class="btn btn-primary" data-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        function onSuccessRejectCancelEvent(result) {
+            if (result.resultMessage) {
+                alert(result.resultMessage)
+                window.location.reload();
+            }
+        }
+
+        function onSuccessApproveCancelEvent(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location.reload();
+            }
+        }
+
+        function SuccessApprove(result) {
+            if (result.message != null) {
+                alert(result.message);
+                window.location.reload();
+            }
+        }
+
+        function SuccessReject(result) {
+            if (result.messageError != null) {
+                alert(result.messageError);
+            }
+
+            if (result.messageResult != null) {
+                alert(result.messageResult);
+                window.location.reload();
+            }
+        }
+    </script>
+}

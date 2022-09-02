@@ -1,0 +1,29 @@
+﻿@model PagedList.IPagedList<Team15_SEP2022.Models.RegisterEvent>
+@using PagedList.Mvc;
+
+@{ int i = 0;}
+@foreach (var item in Model)
+{
+    i++;
+    var x = item.Event;
+    <tr>
+        <td class="text-center">@i</td>
+        <td>@x.NameEvent</td>
+        <td>@x.EventType.Type</td>
+        <td>@x.StartDate.ToString("dd/M/yyyy")</td>
+        <td>@x.EventStatu.Status</td>
+        <td class="text-center">
+            @if (item.Attendances)
+            {
+                <input type="checkbox" checked disabled>
+            }
+            else
+            {
+                <input type="checkbox" disabled>
+            }
+        </td>
+        <td class="text-center">
+            @Html.ActionLink("Chi tiết sự kiện", "CTSuKien", new { id = item.EventId }, new { @class = "link" })
+        </td>
+    </tr>
+}

@@ -1,0 +1,174 @@
+﻿@model Team15_SEP2022.Models.Event
+
+@{
+    ViewBag.Title = "Chi tiết sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutTT.cshtml";
+    int EventStatusId = Model.EventStatusId;
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Chi Tiết Sự Kiện</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=@Url.Action("SuKien", "QuanTriTT")>Quản Lý Sự Kiện</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi Tiết Sự Kiện</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                @using (Ajax.BeginForm("EditEvent", "QuanTriTT", null, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn có chắc muốn cập nhật sự kiện này?", OnSuccess = "successEdit", LoadingElementId = "loading" }, new { id = "editEventForm", enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="idUpload">
+                        @Html.Partial("_EditEventForm")
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@if (EventStatusId == 1 || EventStatusId == 3)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="confirm-c-event">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận</h5>
+                </div>
+
+                @using (Ajax.BeginForm("CancelEvent", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "upFp", Confirm = "Bạn có chắc muốn yêu cầu hủy sự kiện này?", OnSuccess = "onSuccessCForm", LoadingElementId = "loading" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="modal-body" id="upFp">
+                        @Html.Partial("_CancelEventForm")
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-action">Xác nhận</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function onSuccessCForm(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location.reload();
+            }
+        }
+
+        if (@EventStatusId != 1) {
+            $("#editEventForm input").attr('readonly', 'readonly');
+            $("#editEventForm select, #Content, #Event_Image").attr('disabled', 'disabled');
+            $("#back-sukien").click(function () {
+                window.location.href = "/QuanTriTT/SuKien";
+            })
+        }
+
+        $("#editEventForm :input").change(function () {
+            $("#editEventForm").data("changed", true);
+        });
+
+        $("#btn-update-event").click(function () {
+            if ($("#editEventForm").data("changed")) {
+                $("#editEventForm").submit();
+            } else {
+                alert("Bạn chưa có thay đổi để lưu!")
+            }
+        })
+
+        $("#btn-back-event-list").click(function () {
+            if ($("#editEventForm").data("changed")) {
+                if (confirm("Bạn chưa lưu thay đổi, bạn có chắc muốn thoát?")) {
+                    window.location.href = "@Url.Action("SuKien")"
+                }
+            } else {
+                window.location.href = "@Url.Action("SuKien")"
+            }
+        })
+
+        function successEdit(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location.href = "@Url.Action("SuKien")"
+            }
+        }
+
+        function previewFile(input) {
+            var file = $("input[type=file]").get(0).files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function () {
+                    $("#previewImage").attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        $("#EventTypeId").on("change", function () {
+            if ($(this).val() == 1) {
+                $("#endDate").css("display", "none");
+                $("#EndDate").val($(this).val());
+            } else {
+                $("#endDate").css("display", "block");
+                $("#EndDate").val("");
+            }
+        })
+
+        $("#StartDate").on("change", function () {
+            if ($("#EventTypeId").val() == 1) {
+                $("#EndDate").val($(this).val());
+            }
+        })
+
+        var _URL = window.URL || window.webkitURL;
+        $("#Event_Image").on("change", function (e) {
+            var span = $("span[data-valmsg-for='img']");
+            var btnSub = $("#btn-submit");
+            var file, img;
+            if ((file = this.files[0])) {
+                img = new Image();
+                var objectUrl = _URL.createObjectURL(file);
+                img.onload = function () {
+                    if (this.width < 550) {
+                        span.text("Hình ảnh phải có chiều ngang lớn hơn hoặc bằng 550px");
+                        btnSub.prop("disabled", true);
+                    } else {
+                        btnSub.prop("disabled", false);
+                    }
+
+                    if (this.height < 300) {
+                        span.text("Hình ảnh phải có chiều rộng lớn hơn hoặc bằng 300px")
+                        btnSub.prop("disabled", true);
+                    } else {
+                        btnSub.prop("disabled", false);
+                    }
+                    _URL.revokeObjectURL(objectUrl);
+                };
+                img.src = objectUrl;
+            }
+
+        });
+    </script>
+}

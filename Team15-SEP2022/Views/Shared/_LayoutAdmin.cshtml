@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Area/assets/vendors/choices.js/choices.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Area/assets/css/bootstrap.css" />
+    <link href="~/Area/assets/vendors/simple-datatables/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Area/assets/vendors/chartjs/Chart.min.css" />
+    <link rel="stylesheet" href="~/Area/assets/vendors/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/Area/assets/css/app.css" />
+    <link rel="shortcut icon" href="~/Area/assets/images/logo-vanlangtech.png" type="image/x-icon" />
+</head>
+<body>
+
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <img src="~/Area/assets/images/logo-vanlangtech.png" alt="logo" width="100" height="100" />
+                    <p class="sidebar-header-text">Văn Lang Tech Club</p>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Chức năng</li>
+
+                        <li class="sidebar-item @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active":"")">
+                            <a href=@Url.Action("Index", "Admin") class="sidebar-link ">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
+                                        <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                        <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z" />
+                                    </svg>
+                                </span>
+                                <span>Phân Quyền</span>
+                            </a>
+                        </li>
+                        @{
+                            var txt1 = ViewContext.RouteData.Values["Action"].ToString();
+                            var select1 = "";
+                            var Name = "NienKhoa";
+                            var Name2 = "CTNienKhoa";
+
+                            if ((txt1 == Name) || (txt1 == Name2))
+                            {
+                                select1 = "active";
+                            }
+                            else
+                            {
+                                select1 = "";
+                            }
+                            <li class="sidebar-item @select1">
+                                <a href=@Url.Action("NienKhoa", "Admin") class="sidebar-link">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week" viewBox="0 0 16 16">
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                        </svg>
+                                    </span>
+                                    <span>Niên Khóa</span>
+                                </a>
+                            </li>
+                        }
+                        <li class="sidebar-item">
+                            <a href=@Url.Action("Index","Home") class="sidebar-link">
+                                <span>Trở Về Trang Chủ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="main">
+            <nav class="navbar navbar-header navbar-expand navbar-light">
+                <a class="sidebar-toggler" href="#">
+                    <span class="navbar-toggler-icon"></span>
+                </a>
+                <button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav d-flex align-items-center navbar-light ml-auto">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                                <div class="d-none d-md-block d-lg-inline-block">Xin Chào Admin!</div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href=@Url.Action("LogOff", "Account")><i data-feather="log-out"></i> Đăng xuất</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            @RenderBody()
+        </div>
+        @Html.Partial("_SpinnerAction")
+        @Html.Partial("_Spinner")
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+    <script src="~/Area/assets/vendors/choices.js/choices.min.js"></script>
+    <script src="~/Area/assets/js/feather-icons/feather.min.js"></script>
+    <script src="~/Area/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Area/assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="~/Area/assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="~/Area/assets/js/pages/dashboard.js"></script>
+    <script src="~/Area/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script src="~/Area/assets/js/main.js"></script>
+    <script src="~/Area/assets/js/vendors.js"></script>
+    <script src="~/Area/assets/js/app.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+</body>
+</html>

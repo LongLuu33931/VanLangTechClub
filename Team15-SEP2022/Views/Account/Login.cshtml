@@ -1,0 +1,60 @@
+﻿@using Team15_SEP2022.Models
+@model LoginViewModel
+
+@{
+    string ReturnUrl = String.IsNullOrEmpty(ViewBag.ReturnUrl) ? Request.RawUrl.ToString() : ViewBag.ReturnUrl;
+}
+
+<div class="modal fade text-left" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style="z-index: 10000;">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel1">Đăng Nhập</h5>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="row" style="width:100%">
+                    <div class="col-md-6">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger", id = "summaryValidation" })
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Email</label>
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "email" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <label>Mật khẩu</label>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-login my-2">Đăng nhập</button>
+                            </div>
+
+                        }
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <p class="m-0">Sinh viên đăng nhập bằng email trường cấp</p>
+                        <p class="m-0">Click vào icon Office365 bên dưới để đăng nhập</p>
+                        <a href=@Url.Action("ExternalLogin", "Account", new { provider="LoginVanLang", returnUrl = ReturnUrl }) style="margin-bottom: 40px;">
+                            <img src="https://elearning.vanlanguni.edu.vn/theme/image.php/klass/auth_oidc/1599278604/0/customicon" alt="" width="240" height="60">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="btn-hide-login" class="btn">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval");
+}

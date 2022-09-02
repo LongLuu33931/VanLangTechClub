@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="88078d429c984b16a469641cd2d3e30a" Name="Diagram1" ZoomLevel="60">
+        <EntityTypeShape EntityType="Team15_SEP2022Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.ArchiveDetail" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.AspNetRole" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.AspNetUser" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Cours" Width="1.5" PointX="3" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Department" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Event" Width="3.5" PointX="5.25" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.EventStatu" Width="1.5" PointX="3" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.EventType" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Major" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.RegisterEvent" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.sysdiagram" Width="1.5" PointX="7.75" PointY="10.125" IsExpanded="true" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK__Majors__Departme__3EA749C6" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK__RegisterE__Event__3F9B6DFF" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_Events_EventStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_Events_EventType" ManuallyRouted="false" />
+        <AssociationConnector Association="Team15_SEP2022Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.AggregatedCounter" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Hash" Width="1.5" PointX="10.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Job" Width="1.5" PointX="10.75" PointY="2.125" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.JobParameter" Width="1.5" PointX="13" PointY="4.125" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.JobQueue" Width="1.5" PointX="10.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.List" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Schema" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Server" Width="1.5" PointX="12.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Set" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.State" Width="1.5" PointX="13" PointY="1.125" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Counter" Width="1.5" PointX="12.75" PointY="12.75" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_HangFire_JobParameter_Job" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_HangFire_State_Job" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.Semester" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.SchoolYear" Width="1.5" PointX="5.125" PointY="26.125" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_ArchiveDetail_Semester" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_Events_Semester" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_Semester_SchoolYear" />
+        <EntityTypeShape EntityType="Team15_SEP2022Model.InformationStudent" Width="1.5" PointX="5.25" PointY="4" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_InformationStudent_AspNetUsers" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_InformationStudent_Courses" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_InformationStudent_Departments" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_InformationStudent_Majors" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_RegisterEvents_InformationStudent" />
+        <AssociationConnector Association="Team15_SEP2022Model.FK_ArchiveDetail_InformationStudent" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.ArchiveDetail>
+
+@{
+    ViewBag.Title = "Quản lý thành tích - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Thành Tích</h3>
+            </div>
+        </div>
+    </div>
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-none" id="filter-fade">
+                    <div id="filterEvent">
+                        @using (Ajax.BeginForm("RefreshArchive", "QuanTri", null, new AjaxOptions { HttpMethod = "POST", LoadingElementId = "loading", OnSuccess = "successRefresh" }))
+                        {
+                            <button type="submit" class="btn btn-primary-v2 text-white">Làm mới</button>
+                        }
+
+                        <button class="btn btn-primary-v2 text-white" id="btn-export-file">Export File</button>
+
+                        @using (Ajax.BeginForm("BindingSemestersId", "Binding", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "bindingSuccess", UpdateTargetId = "binding", LoadingElementId = "loading" }, new { id = "bindingform" }))
+                        {
+                            @Html.DropDownList("SchoolYearId", null, new { @class = "form-select event-selector" })
+                        }
+
+
+                        <div id="binding">
+                            @Html.DropDownList("SemestersId", null, new { @class = "form-select event-selector" })
+                        </div>
+                    </div>
+                </div>
+
+                <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD">
+                    <thead>
+                        <tr>
+                            <th data-sortable="false" class="text-center">STT</th>
+                            <th data-sortable='false'>MSSV</th>
+                            <th data-sortable='false'>Họ và Tên</th>
+                            <th data-sortable='false' class="text-center">Sinh hoạt</th>
+                            <th data-sortable='false' class="text-center">Sự kiện</th>
+                            <th data-sortable='false' class="text-center">Tích cực</th>
+                            <th data-sortable='false' class="text-center">Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archiveList">
+                        @{ int index = 0;}
+                        @foreach (var archive in Model)
+                        {
+                            index++;
+                            <tr>
+                                <td class="text-center">@index</td>
+                                <td>@archive.StudentId</td>
+                                <td>@archive.InformationStudent.Full_Name</td>
+                                <th class="text-center">
+                                    @if (archive.ActivityScore >= 0.5)
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled checked>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled>
+                                    }
+                                </th>
+                                <th class="text-center">
+                                    @if (archive.EventScore >= 0.5)
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled checked>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled>
+                                    }
+                                </th>
+                                <th class="text-center">
+                                    @if (archive.ActivityScore >= 0.5 && archive.EventScore >= 0.5)
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled checked>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="checkbox" disabled>
+                                    }
+                                </th>
+                                <td class="text-center">@archive.TotalScore</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="d-none">
+    @using (Html.BeginForm("ExportFileArchiveList", "ExportFile", FormMethod.Post, new { id = "export-eventList-form" }))
+    {
+        <input type="number" id="SemestersId" name="SemestersId"/>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+
+            //Render option to top table
+            $(".dataTable-search").prepend($("#filterEvent").clone());
+            $("#filter-fade").remove();
+
+            $("#btn-export-file").on("click", function () {
+                let semesteridExport = $("#binding > #SemestersId").val();
+                $("#export-eventList-form > #SemestersId").val(semesteridExport);
+                if (confirm("Bạn có muốn export file thành tích này?")) {
+                    $("#export-eventList-form").submit();
+                }
+            })
+         
+            $("#SemestersId").on("change", function () {
+                var url = new URL(window.location.href);
+                var type_params = url.searchParams;
+                type_params.set("SemestersId", this.value);
+                url.search = type_params.toString();
+                window.location.href = url.toString();
+            })
+
+            $("#SchoolYearId").on("change", function () {
+                $("#bindingform").submit();
+                let valueSchoolYear = this.value;BarProp
+                setTimeout(function () {
+                    var url = new URL(window.location.href);
+                    var status_params = url.searchParams;
+                    status_params.set("SchoolYearId", valueSchoolYear);
+                    status_params.set("SemestersId", $("#binding > #SemestersId").val());
+                    url.search = status_params.toString();
+                    window.location.href = url.toString();
+                }, 5000);
+            })
+
+            //Modal export
+            $(".binding-modal").on("change", function () {
+                $("#bindingform1").submit();
+            });
+
+            $("#btn-export-archive").on("click", function () {
+                $("#export-eventList-form").submit();
+            })
+        });
+
+        function successRefresh(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                $("#select-semesterForm").submit();
+            }
+        }
+    </script>
+}

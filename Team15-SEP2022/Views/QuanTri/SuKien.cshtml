@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.Event>
+
+@{
+    ViewBag.Title = "Sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Sự Kiện</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-none" id="filter-fade">
+                    <div id="filterEvent">
+                        <button class="btn btn-primary-v2" id="btn-export-eventList">Export File</button>
+
+                        @using (Html.BeginForm("ExportFileEventList", "ExportFile", FormMethod.Post, new { id = "export-eventList-form" }))
+                        {
+                            @Html.DropDownList("SchoolYearId", null, "Niên khóa", htmlAttributes: new { @class = "form-select event-selector" })
+
+                            @Html.DropDownList("SemestersId", null, "Học kỳ", htmlAttributes: new { @class = "form-select event-selector" })
+                        }
+                        @Html.DropDownList("type", null, "Loại", htmlAttributes: new { @class = "form-select event-selector" })
+
+                        @Html.DropDownList("status", null, "Trạng thái", htmlAttributes: new { @class = "form-select event-selector" })
+                    </div>
+                </div>
+                        <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD;">
+                            <thead>
+                                <tr>
+                                    <th data-sortable="false" class="text-center">STT</th>
+                                    <th data-sortable='false'>Tiêu đề</th>
+                                    <th data-sortable='false' class="text-center">Loại</th>
+                                    <th data-sortable='false' class="text-center">Ngày diễn ra</th>
+                                    <th data-sortable='false' class="text-center">Thời gian</th>
+                                    <th data-sortable='false' class="text-center">Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int count = 1; }
+                                @foreach (var element in Model)
+                                {
+                                    var autoAlert = (int)(element.StartDate.Add(element.StartTime) - DateTime.Now).TotalDays;
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>@element.NameEvent</td>
+                                        <td class="text-center">@element.EventType.Type</td>
+                                        <td class="text-center">@element.StartDate.ToString("dd/M/yyyy")</td>
+                                        <td class="text-center">@element.StartTime.ToString(@"hh\:mm") - @element.EndTime.ToString(@"hh\:mm")</td>
+                                        <td class="text-center">@element.EventStatu.Status</td>
+                                        <td class="text-center">
+                                            <a title="Xem chi tiết" href=@Url.Action("CTSuKien", "QuanTri", new {id = element.Id})>
+                                                <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="info"></i>
+                                            </a>
+                                            <a title="Danh sách đăng ký" href="@Url.Action("DsDkSuKien", "QuanTri", new {id = element.Id})">
+                                                <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="list"></i>
+                                            </a>
+                                            @if (autoAlert <= 14 && element.EventStatu.Id == 1)
+                                            {
+                                                <a href="#" style="color: red;" title="Sự Kiện Cần Duyệt Gấp">
+                                                    <i class="alert-text" data-feather="alert-triangle"></i>
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".dataTable-search").prepend($("#filterEvent").clone());
+            $("#filter-fade").remove();
+
+            $("#type").on("change", function () {
+                var url = new URL(window.location.href);
+                var type_params = url.searchParams;
+                type_params.set("type", this.value);
+                url.search = type_params.toString();
+                window.location.href = url.toString();
+            })
+            $("#status").on("change", function () {
+                var url = new URL(window.location.href);
+                var status_params = url.searchParams;
+                status_params.set("status", this.value);
+                url.search = status_params.toString();
+                window.location.href = url.toString();
+            })
+
+            $("#SchoolYearId").on("change", function () {
+                var url = new URL(window.location.href);
+                var schoolYear_params = url.searchParams;
+                let valX = this.value;
+                if (valX.length <= 0) {
+                    valX = null;
+                }
+                schoolYear_params.set("SchoolYearId", this.value);
+                url.search = schoolYear_params.toString();
+                window.location.href = url.toString();
+            })
+
+            $("#SemestersId").on("change", function () {
+                var url = new URL(window.location.href);
+                var semester_params = url.searchParams;
+                let valX = this.value;
+                if (valX.length <= 0) {
+                    valX = null;
+                }
+                semester_params.set("SemestersId", this.value);
+                url.search = semester_params.toString();
+                window.location.href = url.toString();
+            })
+
+            $("#btn-export-eventList").on("click", function () {
+                if (confirm("Bạn có chắc muốn export file danh sách sự kiện này?")) {
+                    $("#export-eventList-form").submit();
+                }
+            })
+        });
+    </script>
+}

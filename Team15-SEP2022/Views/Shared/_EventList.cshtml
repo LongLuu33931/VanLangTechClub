@@ -1,0 +1,52 @@
+﻿@model PagedList.IPagedList<Team15_SEP2022.Models.Event>
+@using PagedList.Mvc;
+
+@foreach (var item in Model)
+{
+    <div class="content-body">
+        <div class="content-body-box">
+            <div class="box-body border">
+                <div class="box-body-img">
+                    <a href=@Url.Action("CTSuKien", "Home", new {id = item.Id})><img class="img-event" src="@Url.Content("~/Image/" + item.Event_Image)" onerror="this.onerror = null; this.src='/SEP25Team015/Area/assets/images/logo-vanlangtech.png'" alt="" height="250" width="250"></a>
+                </div>
+                <div class="box-body-short">
+                    <h5 class="header-event">@item.NameEvent</h5>
+                    <div class="d-flex align-items-center mb-1 p-x-5">
+                        <div>
+                            <span class="box-date me-2">@item.EndDate.ToString("dd/M/yyyy")</span>
+                        </div>
+                        <div>
+                            <span class="box-date me-2">@item.EndTime</span>
+                        </div>
+                        <div class="box-date me-2 type">@item.EventType.Type</div>
+                        <div>
+                            @switch (item.EventStatusId)
+                            {
+                                case 2:
+                                    <span class="flex-fill badge bg-danger status">@item.EventStatu.Status</span>
+                                    break;
+                                case 3:
+                                    <span class="flex-fill badge bg-success status">@item.EventStatu.Status</span>
+
+                                    break;
+                                case 4:
+                                    <span class="flex-fill badge bg-info status">@item.EventStatu.Status</span>
+                                    break;
+                                case 5:
+                                    <span class="flex-fill badge bg-secondary status">@item.EventStatu.Status</span>
+                                    break;
+
+                            }
+                        </div>
+                    </div>
+                    <p style="padding-right: 10px;">
+                        @item.Content
+                    </p>
+                    <div class="box-body-viewMore" style="text-align:right; margin-right: 10px;">
+                        <a href=@Url.Action("CTSuKien", "Home", new {id = item.Id})>Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

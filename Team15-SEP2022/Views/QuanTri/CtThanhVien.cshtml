@@ -1,0 +1,192 @@
+﻿@model Team15_SEP2022.Models.InformationStudent
+
+@{
+    ViewBag.Title = "Chi tiết thành viên - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Chi Tiết Thành Viên</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=@Url.Action("ThanhVien", "QuanTri")>Quản Lý Thành Viên</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi Tiết Thành Viên</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    @using(Html.BeginForm("EditMember", "QuanTri", FormMethod.Post, new { id = "formInfo" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>MSSV</label>
+                                    @Html.TextBoxFor(model => model.StudentId, new { @class = "form-control", @readonly = "readonly", onfocus = "this.blur()" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Họ và Tên</label>
+                                    @Html.TextBoxFor(model => model.Full_Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Full_Name, "", new { @class = "text-validation" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly", onfocus = "this.blur()" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Số điện thoại</label>
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-validation" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Khoa</label>
+                                    @Html.DropDownList("DepartmentId", null, htmlAttributes: new { @class = "form-control form-background" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Ngành</label>
+                                    
+                                        @Html.DropDownList("MajorsId", null, htmlAttributes: new { @class = "form-control form-background" })
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Khóa</label>
+                                    @Html.DropDownList("CoursesId", null, htmlAttributes: new { @class = "form-control form-background" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="form-group">
+                                    <label>Lớp</label>
+                                    @Html.TextBoxFor(model => model.Class, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Class, "", new { @class = "text-validation" })
+                                </div>
+                            </div>
+
+                            @Html.HiddenFor(model => model.UserId, new { @class = "form-control", @hidden = "hidden" })
+
+                            <div class="col-md-6 col-12">
+                                <div class="form-group">
+                                    <label>Chức vụ</label>
+                                    <p>@ViewBag.Role.Name</p>
+                                </div>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end">
+                                @if (ViewBag.Role.Id == "3" && Model.ScheduleReqRemoveId == null)
+                                {
+                                    <button class="btn mr-2 btn-primary-v2" type="button" onclick="checkChange()">Cập nhật</button>
+                                    <a class="btn btn-action mr-2" data-toggle="modal" data-target="#deleteMember">Xóa</a>
+                                }
+                                <a class="btn btn-cancel mr-2" href=@Url.Action("ThanhVien", "QuanTri")>Trở Về</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@using (Ajax.BeginForm("BindingMajorsId", "Binding", null, new AjaxOptions { HttpMethod = " POST", UpdateTargetId = "binding" }, new { id = "binding-form1" }))
+{
+    <input id="DId" name="DId" value='@Model.DepartmentId'class="d-none"/>
+}
+
+@if (Model.ScheduleReqRemoveId == null)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteMember">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có muốn <span id="alert-text">xóa</span> thông tin của thành viên này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">Quay về</button>
+                    @Ajax.ActionLink("Có", "DeleteMember", "QuanTri", new { id = Model.StudentId.Trim() },
+                        new AjaxOptions { HttpMethod = "DELETE", OnSuccess = "onDelete" }, htmlAttributes: new { @class = "btn btn-action" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="editMember">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có muốn sửa thông tin của thành viên này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">Quay về</button>
+                    <a class="btn btn-action" onclick="editInfo()">Có</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#formInfo :input").change(function () {
+            $("#formInfo").data("changed", true);
+        });
+
+        function checkChange() {
+            if ($("#formInfo").data("changed")) {
+                $("#editMember").modal("show");
+            } else {
+                alert("Bạn chưa có thay đổi để lưu chỉnh sửa!")
+            }
+        }
+
+        function editInfo() {
+            $("#formInfo").submit();
+            $("#editMember").modal("hide");
+        }
+
+        function onDelete(result) {
+            var url = "@Url.Action("ThanhVien", "QuanTri")";
+            alert(result.message);
+            window.location.href = url;
+        }
+
+        if (@ViewBag.Role.Id != "3") {
+            $("#formInfo input").attr('readonly', 'readonly');
+            $("#formInfo select").attr('disabled', 'disabled');
+        }
+
+        $("#DepartmentId").on("change", function () {
+            var x = $(this).val();
+            $("#DId").val(x);
+            $("#binding-form1").submit();
+        })
+    </script>
+}

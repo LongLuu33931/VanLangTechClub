@@ -1,0 +1,30 @@
+﻿@model Team15_SEP2022.Models.Semester
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Học kỳ</label>
+        @Html.TextBoxFor(model => model.Semester1, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Semester1, null, new { @class = "text-danger", @readonly = "readonly", onfocus = "this.blur()" })
+    </div>
+</div>
+
+<div class="col-md-6">
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.SchoolYearId)
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Ngày bắt đầu</label>
+        @Html.TextBoxFor(model => model.StartDate, null, new { @class = "form-control", type = "date", Value = Model.StartDate.ToString("yyyy-MM-dd") })
+        @Html.ValidationMessageFor(model => model.StartDate, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Ngày kết thúc</label>
+        @Html.TextBoxFor(model => model.EndDate, null, new { @class = "form-control", type = "date", Value = Model.EndDate.ToString("yyyy-MM-dd") })
+        @Html.ValidationMessageFor(model => model.EndDate, null, new { @class = "text-danger" })
+    </div>
+</div>

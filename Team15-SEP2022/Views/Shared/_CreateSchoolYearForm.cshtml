@@ -1,0 +1,20 @@
+﻿@model Team15_SEP2022.Models.SchoolYear
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Năm bắt đầu</label>
+        @Html.TextBoxFor(model => model.StartYear, null, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(model => model.StartYear, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Năm kết thúc</label>
+        @Html.TextBoxFor(model => model.EndYear, null, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(model => model.EndYear, null, new { @class = "text-danger" })
+    </div>
+</div>
+

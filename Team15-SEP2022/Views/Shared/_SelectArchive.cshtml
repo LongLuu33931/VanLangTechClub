@@ -1,0 +1,51 @@
+﻿@model Team15_SEP2022.Models.ArchiveDetail
+
+@{ 
+    
+}
+
+<tr>
+    <td class="text-center" title="@ViewBag.DisplayActivity">
+        @{
+            if (Model.ActivityScore == 1)
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled checked>
+            }
+            else
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled>
+
+            }
+
+        }
+    </td>
+    <td class="text-center" title="@ViewBag.DisplayEventScore">
+        @{
+            if (Model.EventScore == 1)
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled checked>
+            }
+            else
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled>
+
+            }
+
+        }
+    </td>
+    <td class="text-center">
+        @{
+            if (Model.EventScore >= 0.5 && Model.ActivityScore >= 0.5)
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled checked>
+            }
+            else
+            {
+                <input class="form-check-input" type="checkbox" value="" disabled>
+
+            }
+
+        }
+    </td>
+    <td class="text-center">@Model.TotalScore</td>
+</tr>

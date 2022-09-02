@@ -1,0 +1,64 @@
+﻿@model Team15_SEP2022.Models.ArchiveDetail
+@using Microsoft.AspNet.Identity
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="archivementDetailUser" style="z-index:100000">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thành tích</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            MSSV:
+                            @Model.InformationStudent.StudentId.Trim()
+                        </div>
+                        <div class="col-md-6">
+                            Họ và Tên:
+                            @Model.InformationStudent.Full_Name
+                        </div>
+                        <div class="col-md-6 my-2">
+                            @using (Ajax.BeginForm("BindingSemestersId", "Binding", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "binding" }, new { id = "binding-form" }))
+                            {
+                                <label>Niên Khóa:</label>
+                                @Html.DropDownList("SchoolYearId", null, new { @class = "form-select event-selector d-inline" })
+                            }
+                        </div>
+                        <div class="col-md-6 my-2">
+                            @using (Ajax.BeginForm("SelectArchiveUser", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "upArchive" }, new { id = "changeSemester" }))
+                            {
+                                <label>Học Kỳ:</label>
+                                <div id="binding" class="d-inline-flex">
+                                    @Html.DropDownList("SemestersId", null, new { @class = "form-select event-selector" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <table class="table my-2" style="border: 1px solid #DDDDDD">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sinh hoạt</th>
+                                <th class="text-center">Sự kiện</th>
+                                <th class="text-center">Tích cực</th>
+                                <th class="text-center">Tổng</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upArchive">
+                            @Html.Partial("_SelectArchive", Model)
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-action" data-bs-dismiss="modal">Quay về</button>
+            </div>
+
+        </div>
+    </div>
+</div>

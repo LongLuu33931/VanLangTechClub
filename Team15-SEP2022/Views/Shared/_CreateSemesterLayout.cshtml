@@ -1,0 +1,21 @@
+﻿@model Team15_SEP2022.Models.Semester
+
+@using (Ajax.BeginForm("CreateSemester", "Admin", null, new AjaxOptions { HttpMethod="POST", Confirm = "Bạn có chắc muốn thêm học kỳ này?", UpdateTargetId = "upF", OnSuccess = "success", LoadingElementId="loading" }))
+{
+    <div class="modal fade" id="BTNcreateSemester" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm Niên Khóa</h5>
+                </div>
+                <div id="upF" class="modal-body row">
+                    @Html.Partial("_CreateSemesterForm", Model)
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary-v2">Tạo</button>
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">Quay về</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

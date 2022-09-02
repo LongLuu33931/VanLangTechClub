@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.Semester>
+
+<select class="form-select event-selector" id="SemestersId" name="SemestersId">
+    <option selected>Tất cả học kỳ</option>
+    @foreach (var item in Model)
+    {
+        <option value=@item.Id>@item.Semester1</option>
+    }
+</select>
+
+<script type="text/javascript">
+    $("#SemestersId").change(function () {
+        $("#FormChange").submit();
+        $("#changeSemester").submit();
+    });
+</script>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.Event>
+
+@{
+    ViewBag.Title = "Sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutTT.cshtml";
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Sự Kiện</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-none" id="filter-fade">
+                    <div id="filterEvent">
+                        <button class="btn btn-primary-v2" data-toggle="modal" data-target="#modal-exportfile">Export File</button>
+
+                        @Html.DropDownList("type", null, "Loại", htmlAttributes: new { @class = "form-select event-selector" })
+
+                        @Html.DropDownList("status", null, "Trạng thái", htmlAttributes: new { @class = "form-select event-selector1" })
+                    </div>
+                </div>
+                <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD;">
+                    <thead>
+                        <tr>
+                            <th data-sortable="false" class="text-center">TT</th>
+                            <th data-sortable='false'>Tiêu đề</th>
+                            <th data-sortable='false' class="text-center">Loại</th>
+                            <th data-sortable='false' class="text-center">Ngày diễn ra</th>
+                            <th data-sortable='false' class="text-center">Thời gian</th>
+                            <th data-sortable='false' class="text-center">Trạng thái</th>
+                            <th data-sortable='false' class="text-center">
+                                <a class="btn btn-primary-v2 text-white" type="btn" href=@Url.Action("TaoSuKien")>Tạo sự kiện</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int count = 1;}
+                        @foreach (var ele in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@count</td>
+                                <td>@ele.NameEvent</td>
+                                <td class="text-center">@ele.EventType.Type</td>
+                                <td class="text-center">@ele.StartDate.ToString("dd/M/yyyy")</td>
+                                <td class="text-center">@ele.StartTime.ToString(@"hh\:mm") - @ele.EndTime.ToString(@"hh\:mm")</td>
+                                <td class="text-center">@ele.EventStatu.Status</td>
+                                <td class="text-center">
+                                    <a title="Xem chi tiết" href=@Url.Action("CTSuKien", "QuanTriTT", new {id = ele.Id})>
+                                        <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="info"></i>
+                                    </a>
+                                    <a title="Danh sách đăng ký" href="@Url.Action("DsDkSuKien", "QuanTriTT", new {id = ele.Id})">
+                                        <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="list"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modal-exportfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export File</h5>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("BindingSemestersId", "Binding", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "binding" }, new { id = "bindingform" }))
+                {
+                    <label>Niên khóa</label>
+                    @Html.DropDownList("SchoolYearId", null, new { @class = "form-control" })
+                }
+                <label>Học kỳ</label>
+                @using (Html.BeginForm("ExportFileEventList", "ExportFile", FormMethod.Post, new {id="export-eventList-form"}))
+                {
+                    <div id="binding">
+                        @Html.DropDownList("SemestersId", null, new { @class = "form-control" })
+                    </div>
+                }
+            </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-export-event" class="btn btn-primary-v2">Xác nhận</button>
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">Quay về</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".dataTable-search").prepend($("#filterEvent").clone());
+            $("#filter-fade").remove();
+            $("#type").on("change", function () {
+                var url = new URL(window.location.href);
+                var type_params = url.searchParams;
+                type_params.set("type", this.value);
+                url.search = type_params.toString();
+                window.location.href = url.toString();
+            })
+            $("#status").on("change", function () {
+                var url = new URL(window.location.href);
+                var status_params = url.searchParams;
+                status_params.set("status", this.value);
+                url.search = status_params.toString();
+                window.location.href = url.toString();
+            })
+
+            $("#SchoolYearId").on("change", function () {
+                $("#bindingform").submit();
+            })
+
+            $("#btn-export-event").on("click", function() {
+                $("#export-eventList-form").submit();
+            }) 
+        });
+    </script>
+}
+
+
+

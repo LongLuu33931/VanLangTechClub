@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.Major>
+
+<select class="form-control form-background" id="MajorsId" name="MajorsId">
+    @foreach (var item in Model)
+    {
+        <option value=@item.Id>@item.Name_Majors</option>
+    }
+</select>

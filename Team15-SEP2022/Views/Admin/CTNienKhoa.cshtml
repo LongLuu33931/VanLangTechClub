@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.Semester>
+
+@{
+    ViewBag.Title = "Quản lý học kỳ - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int SchoolYearId = (int)ViewBag.SchoolYearId;
+}
+
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Học Kỳ Niên Khóa @ViewBag.SchoolYear</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD;">
+                    <thead>
+                        <tr>
+                            <th data-sortable="false">STT</th>
+                            <th data-sortable='false'>Học Kỳ</th>
+                            <th data-sortable='false' class="text-center">Ngày bắt đầu</th>
+                            <th data-sortable='false' class="text-center">Ngày kết thúc</th>
+                            <th>
+                                @if (ViewBag.Creatable)
+                                {
+                                    <button class="btn btn-primary-v2" type="button" data-toggle="modal" data-target="#BTNcreateSemester">Thêm</button>
+                                }
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int count = 1; }
+                        @foreach (var element in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@element.Semester1</td>
+                                <td class="text-center">@element.StartDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">@element.EndDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @using (Ajax.BeginForm("RemoveSemester", new { id = element.Id }, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn muốn xóa học kỳ này?", OnSuccess = "success", LoadingElementId = "loading" }, new {@class = "d-inline-block"}))
+                                    {
+                                        <button title="Xóa" type="submit" class="btn-empty">
+                                            <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="delete"></i>
+                                        </button>
+                                    }
+                                    @using (Ajax.BeginForm("EditSemesterForm", new { id = element.Id }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "loadingEF", OnSuccess = "succesEF" }, new {@class ="d-inline-block"}))
+                                    {
+                                        <button title="Sửa" type="submit" class="btn-empty">
+                                            <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="edit"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+@if (ViewBag.Creatable) { Html.RenderAction("CreateSemesterLoadingForm", new { SchoolYearId = SchoolYearId }); }
+
+<div id="loadingEF"></div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function success(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location.reload();
+            }
+        }
+
+        function succesEF(result) {
+            $("#editHkF").modal("show");
+
+            $("#btn-c-e-form").on("click", function () {
+                $("#editHkF").modal("hide");
+            })
+        }
+    </script>
+}

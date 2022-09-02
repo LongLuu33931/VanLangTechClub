@@ -1,0 +1,64 @@
+﻿@using Team15_SEP2022.Models
+@model IEnumerable<Team15_SEP2022.Models.Event>
+
+<div class="tab-content">
+    <div id="tab-1" class="tab-pane fade show p-0 active">
+        <div class="row g-4">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="property-item border rounded overflow-hidden">
+                        <div class="position-relative overflow-hidden">
+                            <a href=@Url.Action("CTSuKien", "Home", new {id = item.Id})><img class="img-event" src="@(Url.Content("~/Image/" + item.Event_Image))" onerror="this.onerror = null; this.src='/SEP25Team015/Area/assets/images/logo-vanlangtech.png'" alt=""></a>
+                        </div>
+                        <div class="p-4 bd">
+                            <div style="min-height:50px">
+                                <a href=@Url.Action("CTSuKien", "Home", new {id = item.Id}) class="d-block h5 mb-2 link-event">@item.NameEvent</a>
+
+                            </div>
+                            <div class="d-flex justify-content-around flex-wrap align-items-center">
+                                <small class="flex-fill fw-bold1"><i class="bi bi-calendar-check me-2"><span class="ms-1">@item.EndDate.ToString("dd/M/yyyy")</span></i></small>
+                                <small class="flex-fill fw-bold1"><i class="fa fa-clock me-2"></i>@item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")</small>
+                                @switch (@item.EventStatusId)
+                                {
+
+                                    case 2:
+                                        <span class="flex-fill badge bg-danger">@item.EventStatu.Status</span>
+                                        break;
+                                    case 3:
+                                        <span class="flex-fill badge bg-success">@item.EventStatu.Status</span>
+                                        break;
+                                    case 4:
+                                        <span class="flex-fill badge bg-info">@item.EventStatu.Status</span>
+                                        break;
+                                    case 5:
+                                        <span class="flex-fill badge bg-secondary">@item.EventStatu.Status</span>
+                                        break;
+
+                                }
+                            </div>
+                            <div class="box-body">
+                                <div class="descr">
+                                    <div class="mb-1">
+
+                                        @item.Content
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body-viewMore">
+                                <a href=@Url.Action("CTSuKien", "Home", new {id = item.Id})>Chi Tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-12 text-center wow fadeInUp" data-wow-delay="1s">
+                <a class="btn btn-action py-3 px-5" href=@Url.Action("SuKien")>Xem tất cả sự kiện</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

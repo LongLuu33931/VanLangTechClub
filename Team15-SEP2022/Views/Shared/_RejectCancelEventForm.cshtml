@@ -1,0 +1,10 @@
+﻿@model Team15_SEP2022.Models.Event
+
+<div class="form-group">
+    <label>Lý do từ chối hủy sự kiện</label>
+    @Html.TextAreaFor(model => model.ReasonRejectCancel, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.ReasonRejectCancel, "", new { @class = "text-danger" })
+</div>
+
+
+

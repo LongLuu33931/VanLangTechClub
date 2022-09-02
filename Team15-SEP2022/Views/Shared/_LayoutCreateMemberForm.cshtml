@@ -1,0 +1,47 @@
+﻿@model Team15_SEP2022.Models.InformationStudent
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addMembers">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Thành Viên</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @using (Ajax.BeginForm("CheckStudentId", "QuanTri", new AjaxOptions { OnSuccess = "checkSuccess", HttpMethod = "POST", LoadingElementId = "loading" }, new { id = "checkIdForm" }))
+                            {
+                                <div class="form-group">
+                                    <label>MSSV</label>
+                                    <div class="input-group">
+                                        <input id="checkId" name="checkId" class="form-control"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><a id="btn-check-id" href="#" style="text-decoration: underline">Kiểm tra</a></span>
+                                        </div>
+                                    </div>
+                                    <div id="resultCheck"></div>
+                                </div>
+                            }
+
+                            @using (Ajax.BeginForm("AddMemberByStudentId", "QuanTri",null, new AjaxOptions { OnSuccess = "addMemberSuccess", LoadingElementId = "loading", Confirm = "Bạn có chắc muốn thêm thành viên cho sinh viên này?" }, new {@class = "d-none", id="addMemberByStIdForm"}))
+                            {
+                                <input id="StId" name="StId" type="text"/>
+                            }
+                        </div>
+                    </div>
+                    @using (Ajax.BeginForm("Register", "Account", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccesAddMember", UpdateTargetId = "cMemberF", Confirm = "Bạn có chắc muốn thêm tài khoản này trở thành thành viên?", LoadingElementId = "loading" }, new { id = "formC" }))
+                    {
+                        <div id="cMemberF" style="display: none">
+                            @Html.Partial("_CreateMemberForm", Model)
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-action" id="btn-add-member" disabled>Thêm</button>
+                    <button id="btn-back-c-form" type="button" class="btn btn-secondary">Quay về</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

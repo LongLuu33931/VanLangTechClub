@@ -1,0 +1,420 @@
+﻿
+@{
+    ViewBag.Title = "Thống kê  - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+    var member = ViewBag.Member;
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="d-inline-block">Thống Kê</h3>
+            </div>
+            <div class="col-md-6 text-right">
+                <select id="selectChart" class="form-select event-selector d-inline-block">
+                    <option selected value="1">Thống kê sự kiện</option>
+                    <option value="2">Trình trạng CLB</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content" style="overflow-x: hidden" id="dashboardEvent">
+        <div class="row pr-2">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-success">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Sắp Diển Ra</h5>
+                                    <h4 class="text-white ml-2" id="total-event-will">@ViewBag.EventsSDT</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar2" viewBox="0 0 16 16">
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-primary">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Đang Diễn Ra</h5>
+                                    <h4 class="ml-2 text-white" id="total-event-checking">@ViewBag.EventsDR</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar-minus" viewBox="0 0 16 16">
+                                        <path d="M5.5 9.5A.5.5 0 0 1 6 9h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-dark">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Đã Kết Thúc</h5>
+                                    <h4 class="ml-2 text-white" id="total-event-end">@ViewBag.EventsDKT</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                                        <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-warning">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Chờ duyệt</h5>
+                                    <h4 class="ml-2 text-white" id="total-event-wait-approve">@ViewBag.EventsCD</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar-plus" viewBox="0 0 16 16">
+                                        <path d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-danger">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Chờ hủy</h5>
+                                    <h4 class="ml-2 text-white" id="total-event-waint-cancel">@ViewBag.EventsCH</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar2-x" viewBox="0 0 16 16">
+                                        <path d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708z" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card card-border py-3 pl-4 bg-gray-700">
+                            <div class="row pr-2">
+                                <div class="col-md-7 min-max-height-75px">
+                                    <h5 class="text-white">Đã Hủy</h5>
+                                    <h4 class="ml-2 text-white" id="total-event-cancel">@ViewBag.EventsDH</h4>
+                                </div>
+                                <div class="col-md-5 bg-light-transparent text-white m-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-calendar2-x" viewBox="0 0 16 16">
+                                        <path d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708z" />
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card card-border p-1 text-center" style="width: 100%;">
+                    <h4 id="total-event">Tổng Sự Kiện @ViewBag.Events</h4>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="card card-border" style="min-height: 70vh !important">
+                    <div class="d-flex align-items-center pb-2">
+                        <h4 class="ml-4 mt-4" style="width: 30%">Top 10 Sự Kiện Nổi Bật</h4>
+                        <div class="mr-4 mt-3 text-right" style="width: 70%">
+                            @using (Ajax.BeginForm("BindingSemestersId", "Binding", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "binding" }, new { id = "bindingform", @class = "d-inline-block" }))
+                            {
+                                @Html.DropDownList("SchoolYearId", null, "Tất cả niên khóa", new { @class = "form-select event-selector" })
+                            }
+                            @using (Ajax.BeginForm("UpdateChart", "QuanTri", new AjaxOptions { HttpMethod = "POST", OnSuccess = "updateChart2" }, new { id = "FormChange", @class = "d-inline-block" }))
+                            {
+                                <input id="SchoolYearIdS" name="SchoolYearIdS" type="number" style="display: none" />
+                                <div id="binding" class="d-inline-block">
+                                    @Html.DropDownList("SemestersId", null, "Tất cả học kỳ", new { @class = "form-select event-selector d-inline-block" })
+                                </div>
+                                <div id="updateDropList" class="d-inline-block">
+                                    @Html.DropDownList("StatusId", null, "Trạng thái", new { @class = "form-select event-selector d-inline-block" })
+                                    @Html.DropDownList("TypeId", null, "Loại", new { @class = "form-select event-selector d-inline-block" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-content" style="overflow-x: auto !important; height: 90%; overflow-y: hidden;">
+                        <div class="chartBox" style="position: relative">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-content" style="overflow-x: hidden; display: none" id="statusClub">
+        <div class="row pr-2">
+            <div class="col-md-12">
+                <div class="card card-border p-1 text-center" style="width: 100%;">
+                    <h4>Tổng Thành Viên @ViewBag.Member</h4>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-border">
+                    <h4 class="ml-4 mt-4 mb-2">Thống Kê Sinh Viên Theo Ngành</h4>
+                    <div class="card-content m-auto" style="min-height: 50vh">
+                        <div id="piechart1" style=" margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-border">
+                    <h4 class="ml-4 mt-4 mb-2">Thống Kê Sinh Viên Theo Khóa</h4>
+                    <div class="card-content m-auto" style="min-height: 50vh;">
+                        <div id="piechart" style=" margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        $("#SchoolYearIdS").text($("#SchoolYearId").val());
+
+        $("#SemestersId, #StatusId, #TypeId").change(function () {
+            $("#FormChange").submit();
+        });
+
+        $("#SchoolYearId").change(function () {
+            $("#bindingform").submit();
+            $("#SchoolYearIdS").val($(this).val());
+            $("#FormChange").submit();
+        });
+      
+
+        $("#selectChart").on("change", function () {
+            var valueChanged = $(this).val();
+            $("#statusClub").css("display", valueChanged == 2 ? "block" : "none");
+            $("#dashboardEvent").css("display", valueChanged == 1 ? "block" : "none");
+        })
+
+        let EventNameArr = [];
+        let TotalRegisterArr = [];
+        let TotalAttendandArr = [];
+
+        var abc = @Html.Raw(Json.Encode(ViewBag.Demo1));
+
+        $.each(abc, function (i, item) {
+            EventNameArr.push(item.NameEvent);
+            TotalRegisterArr.push(item.TotalRegister);
+            TotalAttendandArr.push(item.TotalAttendance);
+        })
+
+        var barChartData2 = {
+            labels: EventNameArr,
+            datasets: [{
+                label: 'Tổng Sinh Viên Đăng Ký',
+                backgroundColor: '#6c9bf4',
+                data: TotalRegisterArr
+            },
+            {
+                label: 'Tổng Sinh Viên Đã Điểm Danh',
+                backgroundColor: '#68f7b0',
+                data: TotalAttendandArr
+            },
+            ]
+        };
+
+        Chart.scaleService.updateScaleDefaults('category', {
+            ticks: {
+                callback: function (tick) {
+                    var characterLimit = 10;
+                    if (tick.length >= characterLimit) {
+                        return tick.slice(0, tick.length).substring(0, characterLimit - 1).trim() + '...';;
+                    }
+                    return tick;
+                }
+            }
+        });
+
+        function drawChart(el, data) {
+            var ctx = document.getElementById(el).getContext("2d");
+            return bar = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                            borderColor: '#98c4f9',
+                            borderSkipped: 'bottom'
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        position: 'top',
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: 0,
+                                min: 0
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                autoSkip: false,
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function (tooltipItems, data) {
+                                return data.labels[tooltipItems[0].index]
+                            }
+                        }
+                    },
+                    onresize: function (chart, size) {
+                        chart.options.legend.display = size.height > 128;
+                        chart.update();
+                    }
+                }
+            });
+        };
+
+        var bar = drawChart('myChart', barChartData2);
+
+        function updateChart2(result) {
+
+            let EventNameArr2 = [];
+            let TotalRegisterArr2 = [];
+            let TotalAttendandArr2 = [];
+
+            let abc2 = result.data;
+
+            $.each(abc2, function (i, item) {
+                EventNameArr2.push(item.NameEvent);
+                TotalRegisterArr2.push(item.TotalRegister);
+                TotalAttendandArr2.push(item.TotalAttendance);
+            })
+
+            bar.data.labels = EventNameArr2;
+            bar.data.datasets[0].data = TotalRegisterArr2;
+            bar.data.datasets[1].data = TotalAttendandArr2;
+            bar.update();
+
+            if (EventNameArr2 == null) {
+                bar.clear();
+            }
+
+            $("#total-event").text("Tổng sự kiện "+result.TotalEvent);
+            $("#total-event-checking").text(result.TotalEventDDR);
+            $("#total-event-end").text(result.TotalEventDKT);
+            $("#total-event-cancel").text(result.TotalEventDH);
+            $("#total-event-will").text(result.TotalEventSDT);
+            $("#total-event-wait-cancel").text(result.TotalEventCH);
+            $("#total-event-wait-approve").text(result.TotalEventCD);
+        }
+
+        $(function () {
+            //chart 1
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+                var dataArray = [
+                    ['Tổng sinh viên theo ngành', ''],
+                ]
+
+                var array = @Html.Raw(Json.Encode(ViewBag.Major));
+                $.each(array, function (i, item) {
+                    dataArray.push([item.Major, item.Count])
+                })
+
+                var data = google.visualization.arrayToDataTable(dataArray);
+
+                var options = {
+                    width: 280,
+                    height: 280,
+                    pieHole: 0.6,
+                    chartArea: { width: "90%", height: "100%" },
+                    slices: {
+                        0: { color: 'rgb(255, 99, 132)' },
+                        1: { color: 'rgb(54, 162, 235)' },
+                        2: { color: 'rgb(255, 205, 86)' }
+                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+                chart.draw(data, options);
+            }
+        })
+
+        $(function() {
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+
+                var dataArray = [
+                    ['Tổng sinh viên theo khóa', ''],
+                ]
+
+                var array = @Html.Raw(Json.Encode(ViewBag.Demo));
+
+                $.each(array, function (i, item) {
+                    dataArray.push([item.Coure, item.Count])
+                })
+
+                var data = google.visualization.arrayToDataTable(dataArray);
+
+                var options = {
+                    width: 280,
+                    height: 280,
+                    pieHole: 0.6,
+                    chartArea: { width: "90%", height: "100%" },
+                    pieHole: 0.6,
+                    slices: {
+                        0: { color: 'rgb(255, 99, 132)' },
+                        1: { color: 'rgb(54, 162, 235)' },
+                        2: { color: 'rgb(255, 205, 86)' }
+                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+            }
+
+        })
+    </script>
+}
+

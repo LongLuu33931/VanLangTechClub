@@ -1,0 +1,319 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.AspNetRole>
+
+@{
+    ViewBag.Title = "Quản lý phân quyền - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+}
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Phân Quyền</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            @{ int indexTab = 1;}
+            @foreach (var roles in Model)
+            {
+                var isSelected = "false";
+                if (roles.Id == "")
+                {
+                    isSelected.Replace("false", "true");
+                }
+                if (indexTab == 1)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="@(roles.Id+ "-tab")" data-toggle="tab" href="#home@(roles.Id)" role="tab" aria-controls="@(roles.Id)"
+                           aria-selected="@isSelected">
+                            @roles.Name
+                        </a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="@(roles.Id+ "-tab")" data-toggle="tab" href="#home@(roles.Id)" role="tab" aria-controls="@(roles.Id)"
+                           aria-selected="@isSelected">
+                            @roles.Name
+                        </a>
+                    </li>
+                }
+                indexTab++;
+            }
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            @{ int index = 1;}
+            @foreach (var roles in Model)
+            {
+                var isSelected = roles.Id;
+                if (index == 1)
+                {
+                    isSelected += " show active";
+                }
+
+                <div class="@("tab-pane fade" + isSelected)" id="home@(roles.Id)" role="tabpanel" aria-labelledby="@(roles.Id + "-tab")">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="@("table-role" + index)" class=" table" style="border: 1px solid #dddddd;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th>MSSV</th>
+                                        <th>Tên</th>
+                                        <th>Email</th>
+                                        <th>
+                                            @{ if (roles.Id != "3")
+                                                {
+                                                    <a title="Thêm Phân Quyền" href="javascript:void;" onclick="loadAddUserRole('@roles.Id')">
+                                                        <i class="badge-circle badge-circle-light-secondary font-medium-1 link" data-feather="user-plus"></i>
+                                                    </a>
+                                                }
+                                            }
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int count = 1;}
+                                    @foreach (var users in roles.AspNetUsers)
+                                    {
+                                        foreach (var person in users.InformationStudents)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@count</td>
+                                                <td>@person.StudentId</td>
+                                                <td>@person.Full_Name</td>
+                                                <td>@person.Email</td>
+                                                <td>
+                                                    <a title="Sửa Phân Quyền" href="javascript:void;" onclick="loadEditUserRoleForm('@users.Id')">
+                                                        <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="edit"></i>
+                                                    </a>
+                                                    <a title="Xóa Phân Quyềns" href="javascript:void;" onclick="loadDeleteUserRole('@users.Id', '@roles.Id')">
+                                                        <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="delete"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            count++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                index++;
+            }
+        </div>
+
+    </section>
+</div>
+
+
+<div class="modal fade text-left" tabindex="-1" role="dialog" id="editUserToRole">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Phân quyền</h5>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="email-id-column">Chức Vụ</label>
+                    <div class="col-md-6 ">
+                        <select id="select-list-e-user-role" class="form-control">
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel close-modal">Quay về</button>
+                <button type="button" class="btn btn-action" id="btn-e-user-role">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" tabindex="-1" role="dialog" id="deleteUserRole">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Phân Quyền</h5>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                <p class="px-2 py-2">
+                    Bạn có muốn <span id="alert-text">xóa</span> phân quyền của thành viên này không?
+                </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel close-modal-none-c">Hủy </button>
+                    <button type="button" class="btn btn-action" id="btn-d-user-role">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" tabindex="-1" role="dialog" id="addUserToRole">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Phân quyền</h5>
+            </div>
+            <div class="modal-body row">
+
+                <div class="col-md-12">
+                    <label>Chọn tài khoản</label>
+                    @{
+                        Html.RenderAction("AddUserToRoleList", "QuanTri", new { id = "2" });
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel close-modal">Quay về</button>
+                <button type="button" class="btn btn-action" id="btn-add-user-role">Thêm</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $("#demoSelect").on("change", function () {
+            alert($(this).val());
+        })
+
+         function loadAddUserRole(id) {
+             $("#addUserToRole").modal("show");
+        }
+
+        $("#btn-add-user-role").on('click', function () {
+            var value = $("#select").val();
+            $("#loadingAction").css("display", "block");
+            var url = "@Url.Action("AddUserToRole")";
+            var userId = $("#addUserToRole .modal-body select option:selected").val();
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { UserId: value, RoleId: "2" },
+                dataType: "json",
+                success: function (data) {
+                    $("#loadingAction").css("display", "none");
+                    alert(data);
+                    location.reload();
+                },
+                error: function (err) {
+                    $("#loadingAction").css("display", "none");
+                    alert('error');
+                }
+            })
+        })
+
+
+        function loadDeleteUserRole(userId, roleId) {
+            var userId = userId;
+            var roleId = roleId;
+            $("#deleteUserRole").modal("show");
+            $("#btn-d-user-role").on("click", function () {
+                deleteUserRole(userId, roleId);
+            })
+        }
+
+        function deleteUserRole(userId, roleId) {
+            $("#loadingAction").css("display", "block");
+            var url = "@Url.Action("DeleteUserRole")";
+            console.log(userId + " " + roleId + " " + url);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { userId: userId, roleId: roleId },
+                dataType: "json",
+                success: function (data) {
+                    $("#loadingAction").css("display", "none");
+                    alert(data);
+                    location.reload();
+                },
+                error: function (err) {
+                    $("#loadingAction").css("display", "none");
+                    alert('error');
+                }
+            });
+        }
+
+        function editUserRole(id) {
+            $("#loadingAction").css("display", "block");
+            var url = "@Url.Action("EditUserRole")";
+            var selectedRole = $('#select-list-e-user-role').find(":selected").val();
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { userId: id, roleId: selectedRole.toString() },
+                dataType: "json",
+                success: function (data) {
+                    if (data.ErrorMessage.length > 0) {
+                        $("#loadingAction").css("display", "none");
+                        alert(data.ErrorMessage);
+                    } else {
+                        $("#loadingAction").css("display", "none");
+                        alert(data.Message);
+                        location.reload();
+                    }
+                },
+                error: function (err) {
+                    alert('error');
+                }
+            })
+        }
+
+        function loadEditUserRoleForm(id) {
+            var url = "@Url.Action("EditUserRole")";
+            $("#editUserToRole .modal-body select").remove();
+            $.ajax({
+                type: 'GET',
+                url: url + "/" + id,
+                dataType: "json",
+                success: function (data) {
+                    var returnView = "";
+                    $.each(data, function (index, data) {
+                        var isSelected = data.Selected ? "selected" : ""
+                        returnView += "<option value=" + data.Id + " " + isSelected + ">" + data.Name + "</option>";
+                    })
+                    var selectList = "<select id='select-list-e-user-role' class='form-control'>" + returnView + "</select>"
+                    $("#editUserToRole .modal-body .form-group").append(selectList);
+                    document.getElementById("btn-e-user-role").onclick = function () { editUserRole(id) };
+                    $("#editUserToRole").modal("show");
+                },
+                error: function (err) {
+                    alert('error');
+                }
+            })
+        }
+
+        $(".close-modal-none-c").on("click", function () {
+            $(".modal").modal("hide");
+        })
+
+        $(".close-modal").on("click", function () {
+            if (confirm('Chưa lưu chỉnh sửa, bạn vẫn muốn thoát?') == true) {
+                $(".modal").modal("hide");
+            }
+        })
+
+        $(function () {
+            var $h3s = $('.nav-link').click(function () {
+                $h3s.removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+}

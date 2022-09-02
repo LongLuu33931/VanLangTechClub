@@ -1,0 +1,204 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Area/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/Area/assets/vendors/simple-datatables/style.css" />
+    <link rel="stylesheet" href="~/Area/assets/vendors/chartjs/Chart.min.css" />
+    <link rel="stylesheet" href="~/Area/assets/vendors/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/Area/assets/css/app.css" />
+    <link href="~/Area/assets/vendors/choices.js/choices.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/Area/assets/images/logo-vanlangtech.png" type="image/x-icon" />
+</head>
+<body>
+
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <img src="~/Area/assets/images/logo-vanlangtech.png" alt="logo" width="100" height="100" />
+                    <p class="sidebar-header-text">Văn Lang Tech Club</p>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Chức năng</li>
+                        <li class="sidebar-item  @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                            <a href=@Url.Action("Index", "QuanTri") class="sidebar-link">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                                        <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z" />
+                                    </svg>
+                                </span>
+                                <span>Thống Kê</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item @(ViewContext.RouteData.Values["Action"].ToString() == "PhanQuyen" ? "active" : "")">
+                            <a href=@Url.Action("PhanQuyen", "QuanTri") class="sidebar-link ">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
+                                        <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                        <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z" />
+                                    </svg>
+                                </span>
+                                <span>Phân Quyền</span>
+                            </a>
+                        </li>
+                        @{
+                            var txt = ViewContext.RouteData.Values["Action"].ToString();
+                            var select = "";
+                            var nName = "ThanhVien";
+                            var nName2 = "CTThanhVien";
+                            var nName3 = "DeleteMemberForm";
+                            if ((txt == nName) || (txt == nName2) || (txt == nName3))
+                            {
+                                select = "active";
+                            }
+                            else
+                            {
+                                select = "";
+                            }
+
+                            <li class="sidebar-item @select">
+                                <a href=@Url.Action("ThanhVien", "QuanTri") class="sidebar-link">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                                        </svg>
+                                    </span>
+                                    <span>Thành Viên</span>
+                                </a>
+                            </li>
+                        }
+                        @{
+                            var txt1 = ViewContext.RouteData.Values["Action"].ToString();
+                            var select1 = "";
+                            var Name = "SuKien";
+                            var Name2 = "CTSuKien";
+                            var Name3 = "DsDkSuKien";
+                            if ((txt1 == Name) || (txt1 == Name2) || (txt1 == Name3))
+                            {
+                                select1 = "active";
+                            }
+                            else
+                            {
+                                select1 = "";
+                            }
+
+
+                            <li class="sidebar-item @select1">
+                                <a href=@Url.Action("SuKien", "QuanTri") class="sidebar-link">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-event" viewBox="0 0 16 16">
+                                            <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+                                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+                                        </svg>
+                                    </span>
+                                    <span>Sự Kiện</span>
+                                </a>
+                            </li>
+                        }
+                        <li class="sidebar-item @(ViewContext.RouteData.Values["Action"].ToString() == "ThanhTich" ? "active":"")">
+                            <a href=@Url.Action("ThanhTich", "QuanTri") class="sidebar-link">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-award" viewBox="0 0 16 16">
+                                        <path d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702 1.509.229z" />
+                                        <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+                                    </svg>
+                                </span>
+                                <span>Thành Tích</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href=@Url.Action("Index","Home") class="sidebar-link">
+                                <span class="">Trở Về Trang Chủ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="main">
+            <nav class="navbar navbar-header navbar-expand navbar-light">
+                <a class="sidebar-toggler" href="#">
+                    <span class="navbar-toggler-icon"></span>
+                </a>
+                <button class="btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav d-flex align-items-center navbar-light ml-auto">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                                <div class="d-md-block d-lg-inline-block">Xin chào Ban Chủ Nhiệm!</div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updateInfo"><i data-feather="info"></i>Thông tin cá nhân</a>
+                                <a class="dropdown-item" href=@Url.Action("LogOff", "Account")><i data-feather="log-out"></i> Đăng xuất</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            @RenderBody()
+
+            @Html.Partial("_Spinner")
+
+            @if (Request.IsAuthenticated)
+            {
+                Html.RenderAction("UpdateInformation", "QuanTri");
+            }
+
+        </div>
+        @Html.Partial("_SpinnerAction")
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+    <script src="~/Area/assets/js/feather-icons/feather.min.js"></script>
+    <script src="~/Area/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Area/assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="~/Area/assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="~/Area/assets/js/pages/dashboard.js"></script>
+    <script src="~/Area/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script src="~/Area/assets/js/main.js"></script>
+    <script src="~/Area/assets/js/vendors.js"></script>
+    <script src="~/Area/assets/js/app.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Area/scannerQRCode/instascan.min.js"></script>
+    <script src="~/Area/assets/vendors/choices.js/choices.min.js"></script>
+
+    <script>
+        //function toggleChart(value) {
+        //    document.getElementById("statusClub").style.display = value == 1 ? "block" : "none";
+        //    document.getElementById("dashboardEvent").style.display = value == 2 ? "block" : "none";
+        //}
+
+        $(document).on('show.bs.modal', '.modal', function () {
+            $("body").css("padding-right", "0");
+        });
+
+        $(document).on('hide.bs.modal', '.modal', function () {
+            $("body").css("padding-right", "0");
+        });
+
+       /* $("#scanQRCodeForm").modal("show");*/
+    </script>
+
+</body>
+</html>

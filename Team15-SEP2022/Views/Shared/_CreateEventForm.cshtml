@@ -1,0 +1,68 @@
+﻿@model Team15_SEP2022.Models.Event
+
+<div class="col-md-6 col-12">
+    <div class="form-group">
+        <label for="first-name-column">Tiêu Đề</label>
+        @Html.TextBoxFor(model => model.NameEvent, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.NameEvent, "", new { @class = "text-validation" })
+    </div>
+</div>
+
+<div class="col-md-6 col-12">
+    <div class="form-group">
+        <label for="last-name-column">Loại</label>
+        @Html.DropDownList("EventTypeId", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="col-md-6 col-12">
+    <div class="form-group">
+        <label for="country-floating">Ngày diễn ra</label>
+        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-validation" })
+    </div>
+</div>
+
+<div class="col-md-6 col-12">
+    <div class="form-group">
+        <label for="company-column">Giờ Diễn Ra</label>
+        @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control", @type = "time" })
+        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-validation" })
+    </div>
+</div>
+
+<div class="col-md-6 col-12">
+    <div class="form-group" id="endDate">
+        <label for="country-floating">Ngày kết thúc</label>
+        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @type = "date" })
+        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-validation" })
+    </div>
+
+</div>
+<div class="col-md-6 col-12">
+    <div class="form-group">
+        <label for="company-column">Giờ Kết Thúc</label>
+        @Html.TextBoxFor(model => model.EndTime, new { @class = "form-control", @type = "time" })
+        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-validation" })
+    </div>
+</div>
+
+<div class="col-md-6 col-12">
+    <div class="form-group mb-3 d-flex flex-column">
+        <label for="exampleFormControlTextarea1" class="form-label">Hình Ảnh</label>
+        <input type="file" name="Picture" id="Event_Image" accept="image/png, image/jpg"/>
+        @Html.ValidationMessage("img", new { @class = "text-validation" })
+    </div>
+</div>
+
+<div class="col-md-12 col-12">
+    <div class="form-group">
+        <label for="company-column">Mô Tả</label>
+        @Html.TextAreaFor(model => model.Content, new { @class = "form-control min-height-textArea" })
+        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-validation" })
+    </div>
+</div>
+<div class="col-md-12 d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary-v2 mr-1" id="btn-submit">Tạo</button>
+    <button id="btn-back-event-list" type="button" class="btn btn-cancel">Quay lại</button>
+</div>

@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<Team15_SEP2022.Models.Event>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Sự kiện  - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container-xxl py-5">
+    <div class="container  wow fadeIn" data-wow-delay="0.1s">
+        <div>
+            <h1 class="content-header">Sự kiện</h1>
+        </div>
+
+        <nav class="breadcrumb1" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang Chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Danh sách sự kiện</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-end border-bottom pb-2 filter-item">
+            @using (Ajax.BeginForm("EventList", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "updateEventList" }, new { id = "eventList" }))
+            {
+                @Html.Hidden("page", Model.PageNumber)
+
+                <i class="filter-icon bi bi-filter fa-2x fw-bold1"></i>
+
+                <div class="drop-wrapper">
+                    <span class="filter-label">Lọc theo:</span>
+                    @Html.DropDownList("typeId", null, "Loại", htmlAttributes: new { @class = "form-select event-selector d-inline respon mx-1" })
+
+                    @Html.DropDownList("statusId", null, "Trạng thái", htmlAttributes: new { @class = "form-select event-selectord-inline respon mx-1" })
+
+                </div>
+                @Html.TextBox("search", null, new { @class = "form-control event-selector d-inline", Placeholder = "Tìm kiếm" })
+
+
+            }
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-12 col-12 col-sm-12">
+                <div class="content-wrapper pt-2">
+                    <div id="updateEventList">
+                        @Html.Partial("_EventList")
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @if (Model.PageCount > 0)
+        {
+
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm justify-content-end">
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        var x = i == 1 ? " active" : "";
+                        <li data-value=@i class="@("page-item" + x)"><a class="page-link">@i</a></li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#typeId, #statusId").on("change", function () {
+            $("#eventList").submit();
+        })
+
+        $(".page-item").on("click", function () {
+            $("#page").val($(this).attr("data-value"));
+            $("#eventList").submit();
+        })
+
+        $(function () {
+            var $h3s = $('.page-item').click(function () {
+                $h3s.removeClass('active');
+                $(this).addClass('active');
+            });
+        })
+    </script>
+}
+
+

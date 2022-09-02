@@ -1,0 +1,150 @@
+﻿@model Team15_SEP2022.Models.Event
+
+@{
+    int EventStatusId = Model.EventStatusId;
+}
+
+@Html.HiddenFor(model => model.Id, new { @class = "form-control", @hidden = "hidden" })
+@Html.HiddenFor(model => model.EventStatusId, new { @class = "form-control", @hidden = "hidden" })
+@Html.HiddenFor(model => model.Event_Image, new { @class = "form-control", @hidden = "hidden" })
+@Html.HiddenFor(model => model.CreateBy, new { @class = "form-control", @hidden = "hidden" })
+@Html.HiddenFor(model => model.CreateTo, new { @class = "form-control", @hidden = "hidden" })
+
+<div class="row">
+    <div class="col-md-12 col-12">
+        <div class="form-group">
+            <label for="first-name-column">Trạng thái</label>
+            <div>
+                @switch (Model.EventStatusId)
+                {
+                    case 1:
+                        <span class="badge bg-warning">@Model.EventStatu.Status</span>
+                        break;
+                    case 2:
+                        <span class="badge bg-dark">@Model.EventStatu.Status</span>
+                        break;
+                    case 3:
+                        <span class="badge bg-info">@Model.EventStatu.Status</span>
+                        break;
+                    case 4:
+                        <span class="badge bg-primary">@Model.EventStatu.Status</span>
+                        break;
+                    case 5:
+                        <span class="badge bg-success">@Model.EventStatu.Status</span>
+                        break;
+                    case 6:
+                        <span class="badge bg-danger">@Model.EventStatu.Status</span>
+                        break;
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group">
+            <label for="first-name-column">Tiêu Đề</label>
+            @Html.TextBoxFor(model => model.NameEvent, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NameEvent, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group">
+            <label for="last-name-column">Loại</label>
+            @Html.DropDownList("EventTypeId", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group">
+            <label for="country-floating">Ngày diễn ra</label>
+            @Html.TextBoxFor(model => Model.StartDate, new { @class = "form-control", type = "date", Value = Model.StartDate.ToString("yyyy-MM-dd") })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group">
+            <label for="company-column">Giờ Diễn Ra</label>
+            @Html.TextBoxFor(model => Model.StartTime, new { @class = "form-control", type = "time" })
+            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group" id="endDate">
+            <label for="country-floating">Ngày kết thúc</label>
+            @Html.TextBoxFor(model => Model.EndDate, new { @class = "form-control", type = "date", Value = Model.EndDate.ToString("yyyy-MM-dd") })
+            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-6 col-12">
+        <div class="form-group">
+            <label for="company-column">Giờ Kết Thúc</label>
+            @Html.TextBoxFor(model => Model.EndTime, new { @class = "form-control", type = "time" })
+            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-3 col-12" style="width: 20%!important">
+        <div class="form-group mb-3 d-flex flex-column">
+            <label for="exampleFormControlTextarea1" class="form-label">Hình Ảnh</label>
+            <input type="file" name="Picture" id="Event_Image" onchange="previewFile(this)" />
+            @Html.ValidationMessage("img", "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    <div class="col-md-3 col-12">
+        <div class="form-group mb-3 d-flex flex-column">
+            <img id="previewImage" src="@Url.Content("~/Image/" + Model.Event_Image)" onerror="this.onerror = null; this.src='/SEP25Team015/Area/assets/images/logo-vanlangtech.png'" height="80" , width="80" alt=""/>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-12">
+        <div class="form-group">
+            <label for="company-column">Mô Tả</label>
+            @Html.TextAreaFor(model => model.Content, new { @class = "form-control min-height-textArea" })
+            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-validation" })
+        </div>
+    </div>
+
+    @if (EventStatusId == 2 && !String.IsNullOrEmpty(Model.ReasonReject))
+    {
+        <div class="col-md-6 col-12">
+            <label for="company-column">Lý do từ chối</label>
+            @Html.TextAreaFor(model => model.ReasonReject, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+        </div>
+    }
+
+    @if (EventStatusId == 6)
+    {
+        <div class="col-md-6 col-12">
+            <label for="company-column">Lý do hủy</label>
+            @Html.TextAreaFor(model => model.ReasonCancel, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+        </div>
+    }
+
+    @if (EventStatusId == 1 && Model.ReasonRejectCancel != null)
+    {
+        <div class="col-md-6 col-12">
+            <label for="company-column">Lý do từ chối hủy</label>
+            @Html.TextAreaFor(model => model.ReasonRejectCancel, new { @class = "form-control min-height-textArea", @readonly = "readonly", onfocus = "this.blur()" })
+        </div>
+    }
+
+    <div class="col-md-12 col-12">
+        <div class="form-group text-right">
+            @if (EventStatusId == 1)
+            {
+                <button id="btn-update-event" class="btn btn-primary-v2" type="button">Cập nhật</button>
+            }
+
+            @if (EventStatusId == 1 || EventStatusId == 3)
+            {
+                <button data-toggle="modal" data-target="#confirm-c-event" class="btn btn-action" type="button">Hủy sự kiện</button>
+            }
+            <button id="btn-back-event-list" type="button" class="btn btn-cancel">Quay về</button>
+        </div>
+    </div>
+</div>

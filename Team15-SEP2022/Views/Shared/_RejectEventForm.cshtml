@@ -1,0 +1,4 @@
+﻿@model Team15_SEP2022.Models.Event
+
+@Html.TextAreaFor(model => model.ReasonReject, new { @class = "form-control" })
+@Html.ValidationMessageFor(model => model.ReasonReject, "", new { @class = "text-danger" })

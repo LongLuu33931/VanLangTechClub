@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.SchoolYear>
+
+@{
+    ViewBag.Title = "Quản lý học kỳ - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="main-content container-fluid">
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Quản Lý Học Kỳ</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-body">
+                <table id="table-role1" class="table my-2" style="border: 1px solid #DDDDDD;">
+                    <thead>
+                        <tr>
+                            <th data-sortable="false" class="text-center">STT</th>
+                            <th data-sortable='false'>Niên khóa</th>
+                            <th data-sortable='false' class="text-center">Năm bắt đầu</th>
+                            <th data-sortable='false' class="text-center">Năm kết thúc</th>
+                            <th class="text-center">
+                                <button class="btn btn-primary-v2" type="button" data-toggle="modal" data-target="#BTNcreateschoolYear">Thêm</button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int count = 1; }
+                        @foreach (var element in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@count</td>
+                                <td>@element.StartYear.ToString("yyyy") - @element.EndYear.ToString("yyyy")</td>
+                                <td class="text-center">@element.StartYear.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">@element.EndYear.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a title="Xem chi tiết" href=@Url.Action("CTNienKhoa", "Admin", new {id = element.Id})>
+                                        <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="info"></i>
+                                    </a>
+                                    @using (Ajax.BeginForm("RemoveSchoolYear", new { id = element.Id }, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn muốn xóa niên khóa này?", OnSuccess = "successCreateSchoolYear", LoadingElementId = "loading" }, new {@class = "d-inline-block"}))
+                                    {
+                                        <button type="submit" class="btn-empty">
+                                            <i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="delete"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+@{ Html.RenderAction("CreateSchoolYearLoadingForm", "Admin"); }
+
+<div id="loadingEF"></div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function successCreateSchoolYear(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location.reload();
+            }
+        }
+    </script>
+}

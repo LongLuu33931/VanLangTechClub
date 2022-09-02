@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Team15_SEP2022.Models.AspNetUser>
+
+<div class="form-group" id="select-@ViewBag.RoleId">
+    <select class="choices form-select">
+        @foreach (var user in Model)
+        {
+            <option value=@user.Id>@user.Email</option>
+        }
+    </select>
+</div>
+
+

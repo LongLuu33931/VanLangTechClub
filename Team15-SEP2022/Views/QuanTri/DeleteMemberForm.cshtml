@@ -1,0 +1,138 @@
+﻿@model Team15_SEP2022.Models.InformationStudent
+
+@{
+    ViewBag.Title = "Hủy thành viên - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutBCN.cshtml";
+    var FullNameUserRq = ViewBag.FullNameUserRq;
+}
+<div class="main-content container-fluid">
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Hủy Thành Viên</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Họ và Tên
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Full_Name)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Email
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Email)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Số điện thoại
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Phone)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Lớp
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Class)
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Khóa
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Cours.Name_Courses)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <p class="m-0 font-weight-bold">
+                                            Khoa
+                                        </p>
+
+                                        <p class="m-0">
+                                            @Html.DisplayFor(model => model.Department.Name_Department)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <p class="m-0 font-weight-bold">
+                                        Ngành
+                                    </p>
+
+                                    <p class="m-0">
+                                        @Html.DisplayFor(model => model.Major.Name_Majors)
+                                    </p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <p class="m-0 font-weight-bold">Người yêu cầu</p>
+                                    <p>@FullNameUserRq</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 d-flex justify-content-end">
+                                @using (Ajax.BeginForm("AproveDeleteMember", new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn có chắc muốn xóa thành viên này?", OnSuccess = "onSucces" }))
+                                {
+                                    @Html.HiddenFor(model => model.userReqRemoveId);
+                                    @Html.HiddenFor(model => model.UserId);
+                                    <button type="submit" class="btn btn-action" style="margin-right: 5px;">Duyệt</button>
+                                }
+
+                                @using (Ajax.BeginForm("DenyDeleteMember", new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn có chắc muốn từ chối yêu cầu xóa thành viên này?", OnSuccess = "onSucces" }))
+                                {
+                                    @Html.HiddenFor(model => model.userReqRemoveId);
+                                    @Html.HiddenFor(model => model.UserId);
+                                    <button type="submit" class="btn btn-action">Từ chối</button>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function onSucces(result) {
+            if (result != null) {
+                alert(result);
+                location.href = "/SEP25Team015/QuanTri/ThanhVien";
+            }
+        }
+    </script>
+}

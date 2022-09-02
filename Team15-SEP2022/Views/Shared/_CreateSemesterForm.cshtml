@@ -1,0 +1,29 @@
+﻿@model Team15_SEP2022.Models.Semester
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Học kỳ</label>
+        @Html.DropDownList("Semester1", null, new { @class = "form-control"})
+    </div>
+</div>
+
+<div class="col-md-6">
+    @Html.HiddenFor(model => model.SchoolYearId);
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Ngày bắt đầu</label>
+        @Html.TextBoxFor(model => model.StartDate, null, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(model => model.StartDate, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Ngày kết thúc</label>
+        @Html.TextBoxFor(model => model.EndDate, null, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(model => model.EndDate, null, new { @class = "text-danger" })
+    </div>
+</div>
+

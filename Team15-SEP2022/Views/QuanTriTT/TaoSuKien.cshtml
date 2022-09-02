@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Tạo sự kiện - Văn Lang Tech Club";
+    Layout = "~/Views/Shared/_LayoutTT.cshtml";
+}
+
+<div class="main-content container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Tạo Sự Kiện</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=@Url.Action("SuKien", "QuanTriTT")>Quản Lý Sự Kiện</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tạo Sự Kiện</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <section class="section section-content">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+
+                    @using (Ajax.BeginForm("TaoSuKienAction", "QuanTriTT", null, new AjaxOptions { HttpMethod = "POST", Confirm = "Bạn có chắc muốn tạo sự kiện này?", LoadingElementId = "loading", UpdateTargetId = "idFm", OnSuccess = "succesForm" }, new { id ="createForm",  enctype = "multipart/form-data" }))
+                    {
+                        <div class="row" id="idFm">
+                            @Html.Partial("_CreateEventForm")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#createForm :input").change(function () {
+            $("#createForm").data("changed", true);
+        });
+
+        $("#btn-back-event-list").click(function () {
+            if ($("#createForm").data("changed")) {
+                if (confirm("Bạn chưa tạo sự kiện, bạn có chắc muốn thoát?")) {
+                    window.location.href = "@Url.Action("SuKien")";
+                }
+            } else {
+                window.location.href = "@Url.Action("SuKien")";
+            }
+        })
+
+
+        function succesForm(result) {
+            if (result.resultMessage != null) {
+                alert(result.resultMessage);
+                window.location = "@Url.Action("SuKien")";
+            }
+        }
+
+        $(function () {
+            if ($("#EventTypeId").val() == 1) {
+                $("#endDate").css("display", "none");
+                $("#EndDate").val($("#StartDate").val());
+            } else {
+                $("#endDate").css("display", "block");
+            }
+        })
+
+        $("#EventTypeId").on("change", function () {
+            if ($(this).val() == 1) {
+                $("#endDate").css("display", "none");
+                $("#EndDate").val($("#StartDate").val());
+            } else {
+                $("#endDate").css("display", "block");
+            }
+        })
+
+        $("#StartDate").on("change", function () {
+            if ($("#EventTypeId").val() == 1) {
+                $("#EndDate").val($(this).val());
+            }
+        })
+
+        $("#EventTypeId").on("change", function () {
+            if ($(this).val() == 1) {
+                $("#endDate").css("display", "none");
+                $("#EndDate").val($(this).val());
+            } else {
+                $("#endDate").css("display", "block");
+            }
+        })
+        var _URL = window.URL || window.webkitURL;
+        $("#Event_Image").on("change", function (e) {
+            var span = $("span[data-valmsg-for='img']");
+            var btnSub = $("#btn-submit");
+            var file, img;
+            if ((file = this.files[0])) {
+                img = new Image();
+                var objectUrl = _URL.createObjectURL(file);
+                img.onload = function () {
+                    if (this.width < 550) {
+                        span.text("Hình ảnh phải có chiều ngang lớn hơn hoặc bằng 550px");
+                        btnSub.prop("disabled", true);
+                    } else {
+                        btnSub.prop("disabled", false);
+                    }
+
+                    if (this.height < 300) {
+                        span.text("Hình ảnh phải có chiều rộng lớn hơn hoặc bằng 300px")
+                        btnSub.prop("disabled", true);
+                    } else {
+                        btnSub.prop("disabled", false);
+                    }
+                    _URL.revokeObjectURL(objectUrl);
+                };
+                img.src = objectUrl;
+            }
+            
+        });
+    </script>
+}
